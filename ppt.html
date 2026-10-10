@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DogWalk Presentation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', sans-serif; background: #1a1a2e; color: #fff; overflow: hidden; }
+
+  .slide { display: none; width: 100vw; height: 100vh; padding: 60px; position: relative; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  .slide.active { display: flex; }
+
+  /* Slide 1 - Title */
+  .s1 { background: linear-gradient(135deg, #6c5ce7, #00b894); }
+  .s1 .logo { font-size: 80px; margin-bottom: 10px; }
+  .s1 h1 { font-size: 72px; font-weight: 900; letter-spacing: -2px; }
+  .s1 .tag { font-size: 24px; opacity: 0.9; margin-top: 10px; font-weight: 300; }
+  .s1 .sub { font-size: 16px; opacity: 0.7; margin-top: 30px; border: 1px solid rgba(255,255,255,0.3); padding: 10px 24px; border-radius: 30px; }
+
+  /* Slide 2 - Problem */
+  .s2 { background: linear-gradient(135deg, #2d1b69, #1a1a2e); }
+  .s2 h2 { font-size: 48px; font-weight: 800; color: #ff6b6b; margin-bottom: 40px; }
+  .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 900px; }
+  .prob-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 28px; text-align: left; }
+  .prob-card .icon { font-size: 36px; margin-bottom: 12px; }
+  .prob-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #ffd93d; }
+  .prob-card p { font-size: 14px; opacity: 0.8; line-height: 1.6; }
+
+  /* Slide 3 - Solution */
+  .s3 { background: linear-gradient(135deg, #1a1a2e, #0f3460); }
+  .s3 h2 { font-size: 48px; font-weight: 800; color: #00b894; margin-bottom: 40px; }
+  .sol-row { display: flex; gap: 20px; max-width: 1000px; }
+  .sol-card { flex: 1; background: linear-gradient(135deg, #6c5ce7, #8b7cff); border-radius: 20px; padding: 32px; }
+  .sol-card .icon { font-size: 40px; margin-bottom: 16px; }
+  .sol-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+  .sol-card p { font-size: 14px; opacity: 0.9; line-height: 1.6; }
+
+  /* Slide 4 - Features */
+  .s4 { background: linear-gradient(135deg, #0f3460, #16213e); }
+  .s4 h2 { font-size: 48px; font-weight: 800; color: #ffd93d; margin-bottom: 40px; }
+  .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1000px; }
+  .feat { background: rgba(255,255,255,0.07); border-radius: 16px; padding: 24px; border-top: 3px solid #6c5ce7; }
+  .feat .icon { font-size: 32px; margin-bottom: 10px; }
+  .feat h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .feat p { font-size: 13px; opacity: 0.7; line-height: 1.5; }
+
+  /* Slide 5 - Tech Stack */
+  .s5 { background: linear-gradient(135deg, #16213e, #1a1a2e); }
+  .s5 h2 { font-size: 48px; font-weight: 800; color: #74b9ff; margin-bottom: 40px; }
+  .tech-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; max-width: 900px; }
+  .tech-badge { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 16px 24px; display: flex; align-items: center; gap: 10px; }
+  .tech-badge .icon { font-size: 28px; }
+  .tech-badge div h4 { font-size: 15px; font-weight: 700; }
+  .tech-badge div p { font-size: 12px; opacity: 0.6; }
+  .arch { margin-top: 30px; display: flex; align-items: center; gap: 16px; font-size: 14px; opacity: 0.8; }
+  .arch-box { background: rgba(108,92,231,0.3); border: 1px solid #6c5ce7; border-radius: 10px; padding: 10px 18px; font-weight: 600; }
+  .arch-arrow { font-size: 20px; opacity: 0.5; }
+
+  /* Slide 6 - App Screens */
+  .s6 { background: linear-gradient(135deg, #2d1b69, #0f3460); }
+  .s6 h2 { font-size: 48px; font-weight: 800; color: #fd79a8; margin-bottom: 40px; }
+  .screens { display: flex; gap: 20px; }
+  .screen { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 24px 20px; min-width: 160px; }
+  .screen .phone { font-size: 13px; background: #1a1a2e; border-radius: 14px; padding: 14px 10px; margin-bottom: 10px; min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; }
+  .screen h4 { font-size: 13px; opacity: 0.7; }
+
+  /* Slide 7 - Business Model */
+  .s7 { background: linear-gradient(135deg, #00b894, #00cec9); color: #1a1a2e; }
+  .s7 h2 { font-size: 48px; font-weight: 800; color: #1a1a2e; margin-bottom: 40px; }
+  .biz-row { display: flex; gap: 24px; max-width: 1000px; }
+  .biz-card { flex: 1; background: rgba(255,255,255,0.25); border-radius: 20px; padding: 28px; backdrop-filter: blur(10px); }
+  .biz-card .icon { font-size: 40px; margin-bottom: 14px; }
+  .biz-card h3 { font-size: 20px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; }
+  .biz-card p { font-size: 14px; color: #2d3436; line-height: 1.6; }
+  .biz-card .price { font-size: 28px; font-weight: 900; color: #6c5ce7; margin-top: 10px; }
+
+  /* Slide 8 - Plans */
+  .s8 { background: linear-gradient(135deg, #1a1a2e, #2d1b69); }
+  .s8 h2 { font-size: 48px; font-weight: 800; color: #ffeaa7; margin-bottom: 40px; }
+  .plans { display: flex; gap: 20px; max-width: 900px; }
+  .plan { flex: 1; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 28px; border: 1px solid rgba(255,255,255,0.1); }
+  .plan.best { background: linear-gradient(135deg, #6c5ce7, #8b7cff); border: none; transform: scale(1.05); }
+  .plan .badge { background: #ffd93d; color: #1a1a2e; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
+  .plan h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .plan .price { font-size: 32px; font-weight: 900; margin: 10px 0; }
+  .plan p { font-size: 13px; opacity: 0.8; line-height: 1.5; }
+
+  /* Slide 9 - Stats */
+  .s9 { background: linear-gradient(135deg, #0f3460, #16213e); }
+  .s9 h2 { font-size: 48px; font-weight: 800; color: #a29bfe; margin-bottom: 50px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: 900px; }
+  .stat-box { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 30px 20px; border-bottom: 4px solid #6c5ce7; }
+  .stat-box .num { font-size: 42px; font-weight: 900; color: #6c5ce7; }
+  .stat-box .label { font-size: 14px; opacity: 0.7; margin-top: 6px; }
+  .roadmap { margin-top: 40px; display: flex; gap: 12px; }
+  .rm { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 20px; font-size: 13px; border-left: 3px solid #00b894; }
+
+  /* Slide 10 - Thank You */
+  .s10 { background: linear-gradient(135deg, #6c5ce7, #00b894); }
+  .s10 .big { font-size: 100px; margin-bottom: 20px; }
+  .s10 h1 { font-size: 60px; font-weight: 900; }
+  .s10 p { font-size: 22px; opacity: 0.9; margin-top: 16px; }
+  .s10 .contact { margin-top: 40px; display: flex; gap: 20px; }
+  .s10 .contact-item { background: rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 24px; font-size: 14px; backdrop-filter: blur(10px); }
+
+  /* Navigation */
+  .nav { position: fixed; bottom: 30px; right: 40px; display: flex; gap: 12px; z-index: 100; }
+  .nav button { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 20px; border-radius: 30px; cursor: pointer; font-size: 14px; backdrop-filter: blur(10px); transition: 0.2s; }
+  .nav button:hover { background: rgba(255,255,255,0.3); }
+
+  /* Progress */
+  .progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #6c5ce7, #00b894); transition: width 0.3s; z-index: 100; }
+
+  /* Slide counter */
+  .counter { position: fixed; bottom: 38px; left: 40px; font-size: 13px; opacity: 0.5; z-index: 100; }
+
+  /* Animations */
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  .slide.active > * { animation: fadeInUp 0.5s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide s1 active">
+  <div class="logo">🐾</div>
+  <h1>DogWalk</h1>
+  <div class="tag">Professional Dog Walking Service App</div>
+  <div class="sub">Android & iOS Mobile Application</div>
+</div>
+
+<!-- Slide 2: Problem -->
+<div class="slide s2">
+  <h2>😤 The Problem</h2>
+  <div class="problem-grid">
+    <div class="prob-card">
+      <div class="icon">🔍</div>
+      <h3>No Trusted Walker</h3>
+      <p>Dog owners struggle to find verified, reliable walkers for their pets in their locality.</p>
+    </div>
+    <div class="prob-card">
+      <div class="icon">📅</div>
+      <h3>No Easy Booking</h3>
+      <p>No platform to schedule, track, and manage dog walking sessions conveniently.</p>
+    </div>
+    <div class="prob-card">
+      <div class="icon">💰</div>
+      <h3>No Transparent Pricing</h3>
+      <p>Hidden charges and no standardized pricing for professional dog walking services.</p>
+    </div>
+    <div class="prob-card">
+      <div class="icon">🔒</div>
+      <h3>Safety Concerns</h3>
+      <p>No background verification of walkers. Pet owners worried about their dog's safety.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: Solution -->
+<div class="slide s3">
+  <h2>✅ Our Solution</h2>
+  <div class="sol-row">
+    <div class="sol-card">
+      <div class="icon">📱</div>
+      <h3>Mobile App</h3>
+      <p>One-tap booking for dog walks. Available on Android & iOS. Real-time walker tracking.</p>
+    </div>
+    <div class="sol-card" style="background: linear-gradient(135deg, #00b894, #00cec9);">
+      <div class="icon">🦮</div>
+      <h3>Verified Walkers</h3>
+      <p>Aadhaar + PAN verified walkers. GPS tracked. Background checked for safety.</p>
+    </div>
+    <div class="sol-card" style="background: linear-gradient(135deg, #e17055, #fd79a8);">
+      <div class="icon">💳</div>
+      <h3>Secure Payment</h3>
+      <p>UPI, GPay, PhonePe, Paytm — all supported. Powered by Razorpay gateway.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 4: Features -->
+<div class="slide s4">
+  <h2>⚡ Key Features</h2>
+  <div class="feat-grid">
+    <div class="feat">
+      <div class="icon">👤</div>
+      <h3>User Registration</h3>
+      <p>Email & phone OTP verification. Secure login with JWT tokens.</p>
+    </div>
+    <div class="feat">
+      <div class="icon">🐕</div>
+      <h3>Dog Management</h3>
+      <p>Add multiple dogs with breed, age, weight & special notes.</p>
+    </div>
+    <div class="feat">
+      <div class="icon">📅</div>
+      <h3>Smart Booking</h3>
+      <p>Select plan, dog, date & time. Auto date/time picker. Walker auto-assigned.</p>
+    </div>
+    <div class="feat">
+      <div class="icon">📍</div>
+      <h3>GPS Tracking</h3>
+      <p>Walker location verified during registration. Walk tracking for safety.</p>
+    </div>
+    <div class="feat">
+      <div class="icon">🔔</div>
+      <h3>Notifications</h3>
+      <p>Booking alerts, walker assignment, walk completion — all real-time.</p>
+    </div>
+    <div class="feat">
+      <div class="icon">🦮</div>
+      <h3>Walker Dashboard</h3>
+      <p>Separate walker app. Online/offline toggle. Accept/reject bookings.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 5: Tech Stack -->
+<div class="slide s5">
+  <h2>🛠️ Technology Stack</h2>
+  <div class="tech-row">
+    <div class="tech-badge">
+      <div class="icon">⚛️</div>
+      <div><h4>React Native</h4><p>Expo SDK 51</p></div>
+    </div>
+    <div class="tech-badge">
+      <div class="icon">🐘</div>
+      <div><h4>PHP Backend</h4><p>REST API</p></div>
+    </div>
+    <div class="tech-badge">
+      <div class="icon">🗄️</div>
+      <div><h4>MySQL</h4><p>Database</p></div>
+    </div>
+    <div class="tech-badge">
+      <div class="icon">💳</div>
+      <div><h4>Razorpay</h4><p>Payments</p></div>
+    </div>
+    <div class="tech-badge">
+      <div class="icon">🌐</div>
+      <div><h4>GoDaddy</h4><p>Hosting</p></div>
+    </div>
+    <div class="tech-badge">
+      <div class="icon">📦</div>
+      <div><h4>EAS Build</h4><p>APK Deploy</p></div>
+    </div>
+  </div>
+  <div class="arch">
+    <div class="arch-box">📱 React Native App</div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box">🌐 REST API (PHP)</div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box">🗄️ MySQL DB</div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box">💳 Razorpay</div>
+  </div>
+</div>
+
+<!-- Slide 6: App Screens -->
+<div class="slide s6">
+  <h2>📱 App Screens</h2>
+  <div class="screens">
+    <div class="screen">
+      <div class="phone">
+        <div style="font-size:36px">🐕</div>
+        <div style="font-size:16px;font-weight:700">DogWalk</div>
+        <div style="font-size:10px;opacity:0.6">Happy Dogs. Happy Life.</div>
+        <div style="background:#C85A32;border-radius:8px;padding:6px 12px;font-size:10px;margin-top:8px">Get Started</div>
+        <div style="background:transparent;border:1px solid #888;border-radius:8px;padding:5px 12px;font-size:10px;margin-top:4px">Login</div>
+      </div>
+      <h4>Home Screen</h4>
+    </div>
+    <div class="screen">
+      <div class="phone">
+        <div style="font-size:11px;font-weight:700;margin-bottom:6px">Book a Walk</div>
+        <div style="background:#6c5ce7;border-radius:6px;padding:5px 8px;font-size:9px;width:100%;text-align:left">📋 Monthly ₹5,999</div>
+        <div style="background:#333;border-radius:6px;padding:5px 8px;font-size:9px;width:100%;text-align:left;margin-top:4px">🐕 Max (Labrador)</div>
+        <div style="background:#333;border-radius:6px;padding:5px 8px;font-size:9px;width:100%;text-align:left;margin-top:4px">📅 Oct 15, 8:00 AM</div>
+        <div style="background:#6c5ce7;border-radius:8px;padding:6px;font-size:9px;width:100%;text-align:center;margin-top:8px">Pay ₹5,999 via UPI</div>
+      </div>
+      <h4>Book Screen</h4>
+    </div>
+    <div class="screen">
+      <div class="phone">
+        <div style="font-size:11px;font-weight:700;margin-bottom:6px">My Bookings</div>
+        <div style="background:#333;border-radius:6px;padding:6px;font-size:9px;width:100%;text-align:left;margin-top:4px;border-left:3px solid #00b894">
+          🐕 Max<br><span style="opacity:0.6">Oct 15 · 8:00 AM</span><br>
+          <span style="color:#00b894;font-size:8px">✅ Confirmed</span>
+        </div>
+        <div style="background:#333;border-radius:6px;padding:6px;font-size:9px;width:100%;text-align:left;margin-top:4px;border-left:3px solid #6c5ce7">
+          🐕 Buddy<br><span style="opacity:0.6">Oct 10 · 9:00 AM</span><br>
+          <span style="color:#6c5ce7;font-size:8px">🎉 Completed</span>
+        </div>
+      </div>
+      <h4>Bookings</h4>
+    </div>
+    <div class="screen">
+      <div class="phone">
+        <div style="font-size:11px;font-weight:700;margin-bottom:6px">Walker Dashboard</div>
+        <div style="background:#00b894;border-radius:8px;padding:6px;font-size:9px;width:100%;text-align:center">🟢 ONLINE</div>
+        <div style="background:#333;border-radius:6px;padding:6px;font-size:9px;width:100%;margin-top:6px;border:1px solid #fbbf24">
+          🔔 New Request<br>
+          🐕 Max · Oct 15<br>
+          ₹5,999<br>
+          <div style="display:flex;gap:4px;margin-top:4px">
+            <div style="background:#e74c3c;border-radius:4px;padding:3px 6px;font-size:8px">❌ Reject</div>
+            <div style="background:#00b894;border-radius:4px;padding:3px 6px;font-size:8px">✅ Accept</div>
+          </div>
+        </div>
+      </div>
+      <h4>Walker App</h4>
+    </div>
+    <div class="screen">
+      <div class="phone">
+        <div style="font-size:11px;font-weight:700;margin-bottom:6px">Notifications</div>
+        <div style="background:#333;border-radius:6px;padding:6px;font-size:9px;width:100%;border-left:3px solid #00b894;margin-top:4px">
+          👋 Welcome!<br><span style="opacity:0.6;font-size:8px">Thanks for joining DogWalk</span>
+        </div>
+        <div style="background:#333;border-radius:6px;padding:6px;font-size:9px;width:100%;border-left:3px solid #6c5ce7;margin-top:4px">
+          🐾 Booking Confirmed<br><span style="opacity:0.6;font-size:8px">Walker assigned!</span>
+        </div>
+        <div style="background:#333;border-radius:6px;padding:6px;font-size:9px;width:100%;border-left:3px solid #f39c12;margin-top:4px">
+          💳 Payment Received<br><span style="opacity:0.6;font-size:8px">₹5,999 via GPay</span>
+        </div>
+      </div>
+      <h4>Notifications</h4>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 7: Business Model -->
+<div class="slide s7">
+  <h2>💼 Business Model</h2>
+  <div class="biz-row">
+    <div class="biz-card">
+      <div class="icon">💰</div>
+      <h3>Commission Model</h3>
+      <p>15-20% commission on every booking from walkers. Zero cost to dog owners.</p>
+      <div class="price">15-20%</div>
+    </div>
+    <div class="biz-card">
+      <div class="icon">📦</div>
+      <h3>Subscription Plans</h3>
+      <p>Monthly, Quarterly & Yearly plans. Recurring revenue model.</p>
+      <div class="price">₹5,999/mo</div>
+    </div>
+    <div class="biz-card">
+      <div class="icon">⭐</div>
+      <h3>Premium Walker</h3>
+      <p>Featured walker listing. Priority booking assignments. Premium badge.</p>
+      <div class="price">₹999/mo</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 8: Plans -->
+<div class="slide s8">
+  <h2>📋 Walk Plans</h2>
+  <div class="plans">
+    <div class="plan">
+      <h3>🦶 Quick Walk</h3>
+      <div class="price">₹199</div>
+      <p>30 min · Per walk · Ideal for busy days</p>
+    </div>
+    <div class="plan">
+      <h3>⏱️ Happy Hour</h3>
+      <div class="price">₹349</div>
+      <p>60 min · Per walk · Extended exercise</p>
+    </div>
+    <div class="plan best">
+      <div class="badge">⭐ POPULAR</div>
+      <h3>📅 Monthly</h3>
+      <div class="price">₹5,999</div>
+      <p>2 sessions/day · 30 min each · Morning + Evening · 30 days</p>
+    </div>
+    <div class="plan">
+      <h3>🗓️ Quarterly</h3>
+      <div class="price">₹15,999</div>
+      <p>3 months · Save ₹1,998 · 11% off monthly</p>
+    </div>
+    <div class="plan">
+      <h3>🏆 Yearly</h3>
+      <div class="price">₹59,999</div>
+      <p>365 days · Save ₹11,989 · 17% off</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 9: Roadmap -->
+<div class="slide s9">
+  <h2>🚀 Current Status & Roadmap</h2>
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="num">10+</div>
+      <div class="label">Screens Built</div>
+    </div>
+    <div class="stat-box">
+      <div class="num">20+</div>
+      <div class="label">API Endpoints</div>
+    </div>
+    <div class="stat-box">
+      <div class="num">2</div>
+      <div class="label">User Roles</div>
+    </div>
+    <div class="stat-box">
+      <div class="num">Live</div>
+      <div class="label">GoDaddy Server</div>
+    </div>
+  </div>
+  <div class="roadmap">
+    <div class="rm">✅ Phase 1: Core App Built</div>
+    <div class="rm" style="border-color:#ffd93d;">🔄 Phase 2: OTP & Notifications</div>
+    <div class="rm" style="border-color:#fd79a8;">📌 Phase 3: Push Notifications</div>
+    <div class="rm" style="border-color:#a29bfe;">📌 Phase 4: Play Store Launch</div>
+  </div>
+</div>
+
+<!-- Slide 10: Thank You -->
+<div class="slide s10">
+  <div class="big">🐾</div>
+  <h1>Thank You!</h1>
+  <p>DogWalk — Happy Dogs. Happy Life.</p>
+  <div class="contact">
+    <div class="contact-item">🌐 dogwalker.co.in</div>
+    <div class="contact-item">📱 Android APK Ready</div>
+    <div class="contact-item">💳 Razorpay Integrated</div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="progress" id="progress"></div>
+<div class="counter" id="counter">1 / 10</div>
+<div class="nav">
+  <button onclick="prevSlide()">◀ Prev</button>
+  <button onclick="nextSlide()">Next ▶</button>
+</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+
+  function showSlide(n) {
+    slides[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+  }
+
+  function nextSlide() { showSlide(current + 1); }
+  function prevSlide() { showSlide(current - 1); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  // Init progress
+  document.getElementById('progress').style.width = (1 / total * 100) + '%';
+</script>
+</body>
+</html>
